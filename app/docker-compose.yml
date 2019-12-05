@@ -1,0 +1,25 @@
+version: '3.7'
+
+services:
+  app1:
+    image: test_app
+    container_name: app1
+  app2:
+    image: test_app
+    container_name: app2
+
+  filebeat:
+    image: docker.elastic.co/beats/filebeat:7.0.1
+    container_name: filebeat
+    user: root
+    networks:
+      - elk
+    volumes:
+      - ./filebeat/filebeat.yml:/usr/share/filebeat/filebeat.yml
+      - /var/lib/docker/containers:/var/lib/docker/containers:ro
+      - /var/run/docker.sock:/var/run/docker.sock:ro
+
+networks:
+  elk:
+    external:
+      name: elk

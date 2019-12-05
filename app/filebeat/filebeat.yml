@@ -1,0 +1,20 @@
+filebeat.inputs:
+  - type: docker
+    combine_partial: true
+    containers:
+      path: "/var/lib/docker/containers"
+      stream: "stdout"
+      ids:
+        - "*"
+
+filebeat.autodiscover:
+  providers:
+    - type: docker
+      hints.enabled: true
+
+processors:
+  - add_host_metadata:
+
+output:
+  logstash:
+    hosts: ["logstash:5044"]
